@@ -3,14 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './styles/all.scss';
 import { Router } from './Router';
 import reportWebVitals from './reportWebVitals';
+import { ToastContainer } from 'react-toastify';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <>
+    <ToastContainer />
     <Router />
-  </React.StrictMode>
+  </>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

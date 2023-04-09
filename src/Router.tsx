@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingComponent from './components/Landing/LandingComponent';
 import ServiceComponent from './components/Service/ServiceComponent';
 import ServiceDetailComponent from './components/ServiceDetail/ServiceDetailComponent';
+import LoginComponent from './components/Login/LoginComponent';
 
 
 export function Router () {
@@ -11,6 +12,7 @@ export function Router () {
         <Route index element={<LandingComponent />} />
         <Route path='ourservice' element={<ServiceComponent />} />
         <Route path='service/:serviceId' element={<ServiceDetailComponent />} />
+        <Route path='admin/login' element={<LoginComponent />} />
       </Routes>
     </BrowserRouter>
   )

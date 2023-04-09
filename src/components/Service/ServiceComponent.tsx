@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { service } from '../../utils/mockData';
+// import { service } from '../../utils/mockData';
 import './ServiceComponent.scss';
 import { Link } from 'react-router-dom';
+import { fetchData } from '../../utils/API';
 
 interface ServiceComponentProps {
 }
@@ -9,15 +10,21 @@ interface ServiceComponentProps {
 const ServiceComponent: React.FC<ServiceComponentProps> = () => {
   const [allService, setAllService] = useState<any>([]);
 
-  useEffect(() => {
-    const groupByCategory = service.reduce((group: any, product: any) => {
+  const getServiceList = async() => {
+    const service: any = await fetchData('adminservice')
+    // console.log(service, service.length);
+    const groupByCategory = service?.reduce((group: any, product: any) => {
       const { Category_Type } = product;
       group[Category_Type] = group[Category_Type] ?? [];
       group[Category_Type].push(product);
       return group;
     }, {});
-    console.log(groupByCategory);
+    // console.log(groupByCategory);
     setAllService(groupByCategory)
+  };
+
+  useEffect(() => {
+    getServiceList();
   }, []);
 
   return (

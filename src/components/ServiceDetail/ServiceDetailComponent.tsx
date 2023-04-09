@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './ServiceDetailComponent.scss';
 import { fetchData, fetchRequest } from '../../utils/API';
@@ -62,6 +62,7 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
   const handleServiceDelete = async () => {
     const deleteResponse = await fetchRequest('DELETE', `adminservice/${serviceDetail.ServiceID}`, '')
     console.log('deleteResponse', deleteResponse);
+    navigate('/ourservice');
   };
 
   const handleInputChange = (event: any) => {
@@ -90,6 +91,7 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
     temp.ServiceID = serviceDetail.ServiceID;
     const updateResponse = await fetchRequest('PUT', 'adminservice', temp);
     console.log('updateResponse', updateResponse);
+    window.location.reload(); 
   };
 
   const handleSubmit = async() => {
@@ -125,6 +127,9 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
     <section className='service-detail-container p-5'>
       <div className='landing-backdrop' />
       <div className='container'>
+          <div className='d-flex'>
+              <Link to="/ourservice" className="btn btn-primary"> Go back</Link>
+          </div>
           <h2 className='text-center'>{serviceDetail.CategoryName}</h2>
           <div className='service-detail-blk d-flex p-4 my-3'>
             <div className='img-container'>
@@ -188,8 +193,9 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
                 <label htmlFor="OfferedPrice" className="form-label">OfferedPrice*</label>
                 <input type="text" name='OfferedPrice' className="form-control" id="OfferedPrice" value={editFormData.OfferedPrice} onChange={handleEditInputChange}/>
               </div>
-              <div className="col-12">
-                <button type="button" className="w-100 btn btn-primary" onClick={handleUpdateSubmit}>Update</button>
+              <div className="col-12 d-flex justify-content-center">
+                <button type="button" className="w-100 btn btn-lg btn-warning" onClick={handleShowEditForm}>Cancel</button>
+                <button type="button" className="ms-3 w-100 btn btn-lg btn-primary" onClick={handleUpdateSubmit}>Update</button>
               </div>
             </form>
           </div>
@@ -220,7 +226,7 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
                   <input type="date" name='serviceDate' className="form-control" id="serviceDate" value={bookFormData.serviceDate} onChange={handleInputChange}/>
                 </div>
                 <div className="col-12">
-                  <button type="button" className="w-100 btn btn-primary" disabled={!enableBtn} onClick={handleSubmit}>Confirm</button>
+                  <button type="button" className="w-100 btn btn-lg btn-primary" disabled={!enableBtn} onClick={handleSubmit}>Confirm</button>
                 </div>
               </form>
             </div>)

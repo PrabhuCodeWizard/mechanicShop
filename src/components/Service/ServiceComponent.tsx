@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import './ServiceComponent.scss';
 import { Link } from 'react-router-dom';
 import { fetchData } from '../../utils/API';
+import { userInfo } from 'os';
 
 interface ServiceComponentProps {
 }
 
 const ServiceComponent: React.FC<ServiceComponentProps> = () => {
   const [allService, setAllService] = useState<any>([]);
+  const [userInfo, setUserInfo] = useState<any>({});
 
   const getServiceList = async() => {
     const service: any = await fetchData('adminservice')
@@ -24,6 +26,8 @@ const ServiceComponent: React.FC<ServiceComponentProps> = () => {
   };
 
   useEffect(() => {
+    let isLogin: any = localStorage.getItem('userInfo');
+    setUserInfo(JSON.parse(isLogin));
     getServiceList();
   }, []);
 
@@ -32,7 +36,10 @@ const ServiceComponent: React.FC<ServiceComponentProps> = () => {
       <div className='container'>
         <h1 className='text-center'>Our Services</h1>
         <section className='my-5'>
-          <h2>Car service Available</h2>
+          <div className='d-flex justify-content-between align-items-center mb-4'>
+            <h2>Car service Available</h2>
+            {userInfo.UserRole === 'Admin' && <button type="button" className="btn btn-lg btn-primary">Create Service</button> }
+          </div>
           <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
           {Object.keys(allService).map(key => (
             <>

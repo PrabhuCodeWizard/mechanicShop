@@ -30,6 +30,9 @@ const LandingComponent: React.FC<LandingComponentProps> = () => {
           <Link className="btn btn-primary btn-lg" to="/ourservice">
             Our Service
           </Link>
+          <Link className="btn btn-primary btn-lg ms-4" to="/feedback">
+            FeedBack
+          </Link>
         </div>
       </div>{" "}
     </section>

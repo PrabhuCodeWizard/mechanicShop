@@ -1,6 +1,8 @@
+const endPoint = 'http://52.3.252.139:8000';
+
 export const fetchData = async(QUERY: string) => {
   // Compose the URL for your project's endpoint and add the query
-  const API_URL = `http://18.206.233.99:8000/${QUERY}`;
+  const API_URL = `${endPoint}/${QUERY}`;
   console.log('get', API_URL);
 
   return await fetch(API_URL)
@@ -10,7 +12,7 @@ export const fetchData = async(QUERY: string) => {
 
 export const fetchRequest = async(METHOD: string, QUERY: string, PARAM: any) => {
   // Compose the URL for your project's endpoint and add the query
-  const API_URL = `http://18.206.233.99:8000/${QUERY}`;
+  const API_URL = `${endPoint}/${QUERY}`;
   console.log('Post', API_URL);
 
   return await fetch(API_URL, {

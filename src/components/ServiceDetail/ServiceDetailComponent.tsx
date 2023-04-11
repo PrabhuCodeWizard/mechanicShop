@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './ServiceDetailComponent.scss';
 import { fetchData, fetchRequest } from '../../utils/API';
+import HeaderComponent from '../HeaderComponent/HeaderComponent';
 
 interface ServiceDetailComponentProps {
 }
@@ -117,9 +118,10 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
 
   useEffect(() => {
     console.log('prams', params.serviceId);
-    let isLogin: any = localStorage.getItem('userInfo');
-    console.log('asdjy dguas', JSON.parse(isLogin));
-    setUserInfo(JSON.parse(isLogin));
+    let isLogin: any = localStorage.getItem("userInfo");
+    if (isLogin) {
+      setUserInfo(JSON.parse(isLogin));
+    }
     handleGetData();
   }, []);
 
@@ -127,6 +129,7 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
     <section className='service-detail-container p-5'>
       <div className='landing-backdrop' />
       <div className='container'>
+          {userInfo.UserRole === 'Admin' && <HeaderComponent />}
           <div className='d-flex justify-content-between'>
             <Link to="/ourservice" className="btn btn-primary"> Go back</Link>
             <Link to="/" className="btn btn-primary"> Home</Link>
@@ -139,7 +142,7 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
             <div className='details-content ms-4'>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{serviceDetail.SubcategoryName}</h2>
-                <span className='badge bg-secondary ms-3'>{serviceDetail.Duration}</span>
+                <span className='badge bg-secondary ms-3'>{serviceDetail.Duration} Hrs Taken</span>
               </div>
               <p>{serviceDetail.Description}</p>
               <div className='d-flex justify-content-between'>
@@ -166,21 +169,21 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
                   <h4 className='text-center'>Update the details</h4>
                   {formError && <p className='mt-3 text-danger text-center'>All fields are mandatory</p> }
               </div>
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label htmlFor="CategoryName" className="form-label">Category Name*</label>
                 <input type="text" name='CategoryName' className="form-control" id="CategoryName" value={editFormData.CategoryName} onChange={handleEditInputChange}/>
               </div>
               <div className="col-md-6">
                 <label htmlFor="Category_Type" className="form-label">Category Type*</label>
                 <input type="email" name='Category_Type' className="form-control" id="Category_Type" value={editFormData.Category_Type} onChange={handleEditInputChange}/>
-              </div>
+              </div> */}
               <div className="col-md-6">
                 <label htmlFor="SubcategoryName" className="form-label">Sub-Category Name*</label>
                 <input type="text" name='SubcategoryName' className="form-control" id="SubcategoryName" value={editFormData.SubcategoryName} onChange={handleEditInputChange}/>
               </div>
               <div className="col-md-6">
                 <label htmlFor="Duration" className="form-label">Duration*</label>
-                <input type="text" name='Duration' className="form-control" id="Duration" value={editFormData.Duration} onChange={handleEditInputChange}/>
+                <input type="number" name='Duration' className="form-control" id="Duration" value={editFormData.Duration} onChange={handleEditInputChange}/>
               </div>
               <div className="col-md-6">
                 <label htmlFor="ActualPrice" className="form-label">ActualPrice*</label>

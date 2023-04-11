@@ -4,13 +4,15 @@ import "./ServiceComponent.scss";
 import { Link } from "react-router-dom";
 import { fetchData, fetchRequest } from "../../utils/API";
 import { toast } from "react-toastify";
+import HeaderComponent from '../HeaderComponent/HeaderComponent';
 
 const ServiceComponent: React.FC = () => {
   const [allService, setAllService] = useState<any>([]);
   const [userInfo, setUserInfo] = useState<any>({});
   const [formError, setFormError] = useState<boolean>(false);
   const [enableBtn, setEnableBtn] = useState<boolean>(false);
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [activeService, setActiveService] = useState<any>({});
+
   const [createFormData, setCreateFormData] = useState<any>({
     CategoryName: "",
     Category_Type: "",
@@ -35,7 +37,6 @@ const ServiceComponent: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("cte", createFormData);
     if (
       createFormData.CategoryName &&
       createFormData.Category_Type &&
@@ -59,9 +60,14 @@ const ServiceComponent: React.FC = () => {
     }
   };
 
-  const handleShowCreateForm = (flag: any) => {
-    setActiveId(flag);
-  }
+  const handleShowCreateForm = (obj: any) => {
+    setActiveService(obj);
+    setCreateFormData((prevState: any) => ({
+      ...createFormData,
+      CategoryName: obj.CategoryName,
+      Category_Type: obj.Category_Type,
+    }));
+  };
 
   const getServiceList = async () => {
     const service: any = await fetchData("adminservice");
@@ -85,6 +91,7 @@ const ServiceComponent: React.FC = () => {
   return (
     <div className="service-container">
       <div className="container">
+        {userInfo.UserRole === 'Admin' && <HeaderComponent />}
         <div className="d-flex justify-content-between">
           <Link to="/" className="btn btn-primary">
             Go back
@@ -109,7 +116,9 @@ const ServiceComponent: React.FC = () => {
 
           {Object.keys(allService).map((key) => (
             <>
-              <h2 className="text-center">{key}</h2>
+              <h2 className="text-center">
+                {allService[key][0]?.CategoryName}
+              </h2>
               <div className="service-blk d-flex flex-wrap justify-content-center align-items-center">
                 {allService[key].map((item: any, index: number) => (
                   <Link to={`/service/${item?.ServiceID}`}>
@@ -127,13 +136,17 @@ const ServiceComponent: React.FC = () => {
                   </Link>
                 ))}
                 {userInfo?.UserRole === "Admin" && (
-                  <div className="service-item d-flex flex-column justify-content-center align-items-center" onClick={() => handleShowCreateForm(allService[key][0]?.Category_Type)}>
+                  <div
+                    className="service-item d-flex flex-column justify-content-center align-items-center"
+                    onClick={() => handleShowCreateForm(allService[key][0])}
+                  >
                     <span>Add service</span>
                   </div>
                 )}
               </div>
               <div>
-                {activeId === allService[key][0]?.Category_Type && (
+                {activeService.Category_Type ===
+                  allService[key][0]?.Category_Type && (
                   <div className="book-form-container">
                     <form className="row g-3">
                       <div className="col-md-12">
@@ -144,7 +157,7 @@ const ServiceComponent: React.FC = () => {
                           </p>
                         )}
                       </div>
-                      <div className="col-md-6">
+                      {/* <div className="col-md-6">
                         <label htmlFor="CategoryName" className="form-label">
                           Category Name*
                         </label>
@@ -155,6 +168,7 @@ const ServiceComponent: React.FC = () => {
                           id="CategoryName"
                           value={createFormData.CategoryName}
                           onChange={handleCreateInputChange}
+                          readOnly
                         />
                       </div>
                       <div className="col-md-6">
@@ -168,8 +182,9 @@ const ServiceComponent: React.FC = () => {
                           id="Category_Type"
                           value={createFormData.Category_Type}
                           onChange={handleCreateInputChange}
+                          readOnly
                         />
-                      </div>
+                      </div> */}
                       <div className="col-md-6">
                         <label htmlFor="SubcategoryName" className="form-label">
                           Sub-Category Name*
@@ -188,7 +203,7 @@ const ServiceComponent: React.FC = () => {
                           Duration*
                         </label>
                         <input
-                          type="text"
+                          type="number"
                           name="Duration"
                           className="form-control"
                           id="Duration"
@@ -238,7 +253,7 @@ const ServiceComponent: React.FC = () => {
                         <button
                           type="button"
                           className="w-100 btn btn-lg btn-warning"
-                          onClick={() => handleShowCreateForm(null)}
+                          onClick={() => handleShowCreateForm({})}
                         >
                           Cancel
                         </button>

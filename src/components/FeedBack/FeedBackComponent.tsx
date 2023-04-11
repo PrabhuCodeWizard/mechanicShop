@@ -56,7 +56,7 @@ const FeedBackComponent: React.FC = () => {
           {feedBackList?.map((item: any, index: number) => (
             <div className="col-12 feedback-blk p-3 m-2" key={index}>
               <p>{item.Comments}</p>
-              <span>{item.Rating}</span>
+              {/* <span>{item.Rating}</span> */}
             </div>
           ))}
           {!showCreateForm ? (

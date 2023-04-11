@@ -13,18 +13,18 @@
       a {
         text-decoration: none;
         color: #fff;
-        .service-item {
-          margin: 15px;
-          width: 210px;
-          height: 210px;
-          box-shadow: 0 0.25rem 0.3125rem -0.15rem rgba(0, 0, 0, 0.12);
-          background-color: hsla(0, 0%, 91.8%, 0.56);
-          transition: transform 0.2s;
-          border-radius: 10px;
-        }
-        .service-item:hover {
-          transform: scale(1.05);
-        }
+      }
+      .service-item {
+        margin: 15px;
+        width: 210px;
+        height: 210px;
+        box-shadow: 0 0.25rem 0.3125rem -0.15rem rgba(0, 0, 0, 0.12);
+        background-color: hsla(0, 0%, 91.8%, 0.56);
+        transition: transform 0.2s;
+        border-radius: 10px;
+      }
+      .service-item:hover {
+        transform: scale(1.05);
       }
     }
   }

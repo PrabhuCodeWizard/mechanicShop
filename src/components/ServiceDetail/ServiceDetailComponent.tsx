@@ -106,8 +106,8 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
         RegistrationNumber: bookFormData.registerNumber,
         EmailID: bookFormData.customerEmail
       }
-      const createService = await fetchRequest('POST', 'bookingservices', param);
-      toast(createService);
+      const bookServiceResponse = await fetchRequest('POST', 'bookingservices', param);
+      toast(bookServiceResponse);
       navigate('/ourservice');
     } else {
       setFormError(true);
@@ -127,8 +127,9 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
     <section className='service-detail-container p-5'>
       <div className='landing-backdrop' />
       <div className='container'>
-          <div className='d-flex'>
-              <Link to="/ourservice" className="btn btn-primary"> Go back</Link>
+          <div className='d-flex justify-content-between'>
+            <Link to="/ourservice" className="btn btn-primary"> Go back</Link>
+            <Link to="/" className="btn btn-primary"> Home</Link>
           </div>
           <h2 className='text-center'>{serviceDetail.CategoryName}</h2>
           <div className='service-detail-blk d-flex p-4 my-3'>
@@ -178,10 +179,6 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
                 <input type="text" name='SubcategoryName' className="form-control" id="SubcategoryName" value={editFormData.SubcategoryName} onChange={handleEditInputChange}/>
               </div>
               <div className="col-md-6">
-                <label htmlFor="Description" className="form-label">Description*</label>
-                <textarea name='Description' className="form-control" id="Description" value={editFormData.Description} onChange={handleEditInputChange} />
-              </div>
-              <div className="col-md-6">
                 <label htmlFor="Duration" className="form-label">Duration*</label>
                 <input type="text" name='Duration' className="form-control" id="Duration" value={editFormData.Duration} onChange={handleEditInputChange}/>
               </div>
@@ -192,6 +189,10 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
               <div className="col-md-6">
                 <label htmlFor="OfferedPrice" className="form-label">OfferedPrice*</label>
                 <input type="text" name='OfferedPrice' className="form-control" id="OfferedPrice" value={editFormData.OfferedPrice} onChange={handleEditInputChange}/>
+              </div>
+              <div className="col-md-12">
+                <label htmlFor="Description" className="form-label">Description*</label>
+                <textarea name='Description' className="form-control" id="Description" value={editFormData.Description} onChange={handleEditInputChange} />
               </div>
               <div className="col-12 d-flex justify-content-center">
                 <button type="button" className="w-100 btn btn-lg btn-warning" onClick={handleShowEditForm}>Cancel</button>

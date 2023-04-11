@@ -2,11 +2,60 @@ import React, { useEffect, useState } from 'react';
 // import { service } from '../../utils/mockData';
 import './ServiceComponent.scss';
 import { Link } from 'react-router-dom';
-import { fetchData } from '../../utils/API';
+import { fetchData, fetchRequest } from '../../utils/API';
+import { toast } from 'react-toastify';
 
 const ServiceComponent: React.FC = () => {
   const [allService, setAllService] = useState<any>([]);
   const [userInfo, setUserInfo] = useState<any>({});
+  const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
+  const [formError, setFormError] = useState<boolean>(false);
+  const [enableBtn, setEnableBtn] = useState<boolean>(false);
+  const [createFormData, setCreateFormData] = useState<any>({
+    CategoryName: '',
+    Category_Type: '',
+    SubcategoryName: '',
+    Description: '',
+    Duration: '',
+    OfferedPrice: '',
+    ActualPrice: '',
+    Discount: null,
+    ServiceImageUrl: null
+  });
+
+  const handleToogleForm = () => {
+    setShowCreateForm(old => !old);
+  };
+
+  const handleCreateInputChange = (event: any) => {
+    setFormError(false);
+    const {value, name} = event.target;
+    console.log(value, name);
+    setEnableBtn(true);
+    setCreateFormData({
+      ...createFormData,
+      [name]: value  
+    });
+  };
+
+  const handleSubmit = async() => {
+    console.log('cte', createFormData);
+    if(createFormData.CategoryName && 
+      createFormData.Category_Type && 
+      createFormData.SubcategoryName && 
+      createFormData.Description && 
+      createFormData.Duration && 
+      createFormData.OfferedPrice && 
+      createFormData.ActualPrice ) {
+      setEnableBtn(false);
+      const createService = await fetchRequest('POST', 'adminservice', createFormData);
+      toast(createService);
+      window.location.reload();
+    } else {
+      setFormError(true);
+      setEnableBtn(true);
+    }
+  };
 
   const getServiceList = async() => {
     const service: any = await fetchData('adminservice')
@@ -30,13 +79,63 @@ const ServiceComponent: React.FC = () => {
   return (
     <div className='service-container'>
       <div className='container'>
+        <div className='d-flex justify-content-between'>
+          <Link to="/" className="btn btn-primary"> Go back</Link>
+          <Link to="/" className="btn btn-primary"> Home</Link>
+        </div>
         <h1 className='text-center'>Our Services</h1>
         <section className='my-5'>
           <div className='d-flex justify-content-between align-items-center mb-4'>
             <h2>Car service Available</h2>
-            {userInfo?.UserRole === 'Admin' && <button type="button" className="btn btn-lg btn-primary">Create Service</button> }
+            {userInfo?.UserRole === 'Admin' && <button type="button" className="btn btn-lg btn-primary" onClick={handleToogleForm}>Create Service</button> }
           </div>
           <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+          <div>
+          {showCreateForm &&
+            (<div className='book-form-container'>
+            <form className="row g-3">
+              <div className="col-md-12">
+                  <h4 className='text-center'>Create new service</h4>
+                  {formError && <p className='mt-3 text-danger text-center'>All fields are mandatory</p> }
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="CategoryName" className="form-label">Category Name*</label>
+                <input type="text" name='CategoryName' className="form-control" id="CategoryName" value={createFormData.CategoryName} onChange={handleCreateInputChange}/>
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="Category_Type" className="form-label">Category Type*</label>
+                <input type="email" name='Category_Type' className="form-control" id="Category_Type" value={createFormData.Category_Type} onChange={handleCreateInputChange}/>
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="SubcategoryName" className="form-label">Sub-Category Name*</label>
+                <input type="text" name='SubcategoryName' className="form-control" id="SubcategoryName" value={createFormData.SubcategoryName} onChange={handleCreateInputChange}/>
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="Duration" className="form-label">Duration*</label>
+                <input type="text" name='Duration' className="form-control" id="Duration" value={createFormData.Duration} onChange={handleCreateInputChange}/>
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="ActualPrice" className="form-label">ActualPrice*</label>
+                <input type="number" name='ActualPrice' className="form-control" id="ActualPrice" value={createFormData.ActualPrice} onChange={handleCreateInputChange}/>
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="OfferedPrice" className="form-label">OfferedPrice*</label>
+                <input type="number" name='OfferedPrice' className="form-control" id="OfferedPrice" value={createFormData.OfferedPrice} onChange={handleCreateInputChange}/>
+              </div>
+              <div className="col-md-12">
+                <label htmlFor="Description" className="form-label">Description*</label>
+                <textarea name='Description' className="form-control" id="Description" value={createFormData.Description} onChange={handleCreateInputChange} />
+              </div>
+              <div className="col-12 d-flex justify-content-center">
+                <button type="button" className="w-100 btn btn-lg btn-warning" onClick={handleToogleForm}>Cancel</button>
+                <button type="button" className="ms-3 w-100 btn btn-lg btn-primary"  disabled={!enableBtn} onClick={handleSubmit}>Save</button>
+              </div>
+            </form>
+          </div>
+
+            )
+          }
+          </div>
           {Object.keys(allService).map(key => (
             <>
               <h2 className='text-center'>{key}</h2>

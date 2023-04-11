@@ -1,4 +1,4 @@
-const endPoint = 'http://52.3.252.139:8000';
+const endPoint = 'http://52.91.120.130:8000';
 
 export const fetchData = async(QUERY: string) => {
   // Compose the URL for your project's endpoint and add the query

@@ -24,7 +24,7 @@ const LoginComponent: React.FC = () => {
         UserName: formData.userName,
         Password: formData.password
       }
-      const loginResponse = await fetchRequest('POST', 'login', params);
+      const loginResponse = await fetchRequest('POST', 'login', params, false);
       localStorage.setItem('userInfo', JSON.stringify(loginResponse));
       navigate('/ourservice');
     }

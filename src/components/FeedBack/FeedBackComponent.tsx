@@ -15,7 +15,7 @@ const FeedBackComponent: React.FC = () => {
       Comments: comment
     };
 
-    const feedCreateResponse = await fetchRequest('POST', 'feedbackservices', params);
+    const feedCreateResponse = await fetchRequest('POST', 'feedbackservices', params, true);
     console.log(feedCreateResponse);
     toast(feedCreateResponse);
     window.location.reload();
@@ -32,7 +32,7 @@ const FeedBackComponent: React.FC = () => {
   };
 
   const getFeedbackList = async () => {
-    const feedResponse: any = await fetchData("feedbackservices");
+    const feedResponse: any = await fetchData("feedbackservices", true);
     console.log("servce", feedResponse);
     setFeedBackList(feedResponse);
   };

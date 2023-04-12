@@ -36,7 +36,7 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
   const [userInfo, setUserInfo] = useState<any>({});
 
   const handleGetData = async() => {
-    const serviceDetail = await fetchData(`adminservice?ServiceID=${params.serviceId}`);
+    const serviceDetail = await fetchData(`adminservice?ServiceID=${params.serviceId}`, false);
     setServiceDetail(serviceDetail);
   };
 
@@ -61,7 +61,7 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
   };
 
   const handleServiceDelete = async () => {
-    const deleteResponse = await fetchRequest('DELETE', `adminservice/${serviceDetail.ServiceID}`, '')
+    const deleteResponse = await fetchRequest('DELETE', `adminservice/${serviceDetail.ServiceID}`, '', false)
     console.log('deleteResponse', deleteResponse);
     navigate('/ourservice');
   };
@@ -90,7 +90,7 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
     console.log('editform', editFormData, serviceDetail.ServiceID);
     let temp = editFormData;
     temp.ServiceID = serviceDetail.ServiceID;
-    const updateResponse = await fetchRequest('PUT', 'adminservice', temp);
+    const updateResponse = await fetchRequest('PUT', 'adminservice', temp, false);
     console.log('updateResponse', updateResponse);
     window.location.reload(); 
   };
@@ -107,7 +107,7 @@ const ServiceDetailComponent: React.FC<ServiceDetailComponentProps> = () => {
         RegistrationNumber: bookFormData.registerNumber,
         EmailID: bookFormData.customerEmail
       }
-      const bookServiceResponse = await fetchRequest('POST', 'bookingservices', param);
+      const bookServiceResponse = await fetchRequest('POST', 'bookingservices', param, false);
       toast(bookServiceResponse);
       navigate('/ourservice');
     } else {

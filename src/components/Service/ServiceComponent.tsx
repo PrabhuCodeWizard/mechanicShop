@@ -50,7 +50,8 @@ const ServiceComponent: React.FC = () => {
       const createService = await fetchRequest(
         "POST",
         "adminservice",
-        createFormData
+        createFormData,
+        false
       );
       toast(createService);
       window.location.reload();
@@ -70,7 +71,7 @@ const ServiceComponent: React.FC = () => {
   };
 
   const getServiceList = async () => {
-    const service: any = await fetchData("adminservice");
+    const service: any = await fetchData("adminservice", false);
     const groupByCategory = service?.reduce((group: any, product: any) => {
       const { Category_Type } = product;
       group[Category_Type] = group[Category_Type] ?? [];

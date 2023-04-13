@@ -1,24 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { axioData, fetchData, fetchRequest } from "../../utils/API";
+import { axioData } from "../../utils/API";
 import "./FeedBackComponent.scss";
 import { toast } from 'react-toastify';
 
 const FeedBackComponent: React.FC = () => {
-  const [comment, setComment] =useState<string | undefined>();
+  const [feedForm, setFeedForm] = useState<any>({
+    comment: '',
+    register: ''
+  });
   const [feedBackList, setFeedBackList] = useState<any>([]);
   const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
 
   const handleSubmit = async() => {
     let params = {
       Rating: 3.5,
-      Comments: comment
+      registeration_number: feedForm.register,
+      Comments: feedForm.comment
     };
 
-    const feedCreateResponse = await fetchRequest('POST', 'rating-api', params, true);
+    const feedCreateResponse = await axioData('POST', 'rating-api/', params);
     console.log(feedCreateResponse);
-    toast(feedCreateResponse);
-    // window.location.reload();
+    if(feedCreateResponse.status === '200') {
+      toast('Feedback added');
+      window.location.reload();
+    } else {
+      toast.error('Ensure this field has no more than 10 characters');
+    }
   };
 
   const handleShowCreateForm = () => {
@@ -27,12 +35,14 @@ const FeedBackComponent: React.FC = () => {
 
   const handleInputChange = (event: any) => {
     const { value, name } = event?.target;
-    console.log(value, name);
-    setComment(value);
+    setFeedForm({
+      ...feedForm,
+      [name]: value,
+    });
   };
 
   const getFeedbackList = async () => {
-    const feedResponse: any = await axioData('rating-api/');
+    const feedResponse: any = await axioData('GET', 'rating-api/', '');
     console.log("servce", feedResponse.data);
     setFeedBackList(feedResponse.data);
   };
@@ -75,13 +85,25 @@ const FeedBackComponent: React.FC = () => {
               </div>
               <div className="col-md-12">
                 <label htmlFor="comment" className="form-label">
+                  Register Number
+                </label>
+                <input
+                  name="register"
+                  className="form-control"
+                  id="comment"
+                  value={feedForm.register}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="col-md-12">
+                <label htmlFor="comment" className="form-label">
                   Comments
                 </label>
                 <textarea
                   name="comment"
                   className="form-control"
                   id="comment"
-                  value={comment}
+                  value={feedForm.comment}
                   onChange={handleInputChange}
                 />
               </div>

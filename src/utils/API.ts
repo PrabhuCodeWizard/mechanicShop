@@ -37,14 +37,15 @@ export const fetchRequest = async(METHOD: string, QUERY: string, PARAM: any, GLO
   .catch((error) => error);
 };
 
-export const axioData = async (QUERY: string) => {
+export const axioData = async (METHOD: string, QUERY: string, PARAM: any) => {
   let config = {
-    method: 'get',
+    method: METHOD,
     maxBodyLength: Infinity,
     url: `${globalPoint}/${QUERY}`,
     headers: { 
       'Content-Type': 'application/json'
     },
+    data : JSON.stringify(PARAM)
   };
   
   return axios.request(config)

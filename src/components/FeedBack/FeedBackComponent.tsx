@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchData, fetchRequest } from "../../utils/API";
+import { axioData, fetchData, fetchRequest } from "../../utils/API";
 import "./FeedBackComponent.scss";
 import { toast } from 'react-toastify';
 
@@ -15,10 +15,10 @@ const FeedBackComponent: React.FC = () => {
       Comments: comment
     };
 
-    const feedCreateResponse = await fetchRequest('POST', 'feedbackservices', params, true);
+    const feedCreateResponse = await fetchRequest('POST', 'rating-api', params, true);
     console.log(feedCreateResponse);
     toast(feedCreateResponse);
-    window.location.reload();
+    // window.location.reload();
   };
 
   const handleShowCreateForm = () => {
@@ -32,9 +32,9 @@ const FeedBackComponent: React.FC = () => {
   };
 
   const getFeedbackList = async () => {
-    const feedResponse: any = await fetchData("feedbackservices", true);
-    console.log("servce", feedResponse);
-    setFeedBackList(feedResponse);
+    const feedResponse: any = await axioData('rating-api/');
+    console.log("servce", feedResponse.data);
+    setFeedBackList(feedResponse.data);
   };
 
   useEffect(() => {
@@ -56,7 +56,6 @@ const FeedBackComponent: React.FC = () => {
           {feedBackList?.map((item: any, index: number) => (
             <div className="col-12 feedback-blk p-3 m-2" key={index}>
               <p>{item.Comments}</p>
-              {/* <span>{item.Rating}</span> */}
             </div>
           ))}
           {!showCreateForm ? (

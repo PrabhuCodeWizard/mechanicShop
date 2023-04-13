@@ -65,6 +65,7 @@ const FeedBackComponent: React.FC = () => {
           </div>
           {feedBackList?.map((item: any, index: number) => (
             <div className="col-12 feedback-blk p-3 m-2" key={index}>
+              <h3>{item.registeration_number}</h3>
               <p>{item.Comments}</p>
             </div>
           ))}

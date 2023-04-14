@@ -1,21 +1,14 @@
 import axios from 'axios';
 
-const endPoint = 'http://54.173.110.138:8000';
+const endPoint = 'http://52.91.154.176:8000';
 const globalPoint = 'http://3.236.171.13:8000';
-
-const requestOptions: any = {
-  method: 'GET',
-  mode: 'no-cors',
-  headers: {"Content-Type":  "application/json"},
-  redirect: 'follow'
-};
 
 export const fetchData = async(QUERY: string, GLOBAL: boolean) => {
   // Compose the URL for your project's endpoint and add the query
   const API_URL = `${GLOBAL ? globalPoint : endPoint}/${QUERY}`;
   console.log('get', API_URL);
 
-  return await fetch(API_URL, requestOptions)
+  return await fetch(API_URL)
   .then((res) => res.json())
   .catch((error) => error);
 };
@@ -27,7 +20,6 @@ export const fetchRequest = async(METHOD: string, QUERY: string, PARAM: any, GLO
 
   return await fetch(API_URL, {
     method: METHOD,
-    mode: 'no-cors',
     headers: {
       'Content-Type': 'application/json',
     },
